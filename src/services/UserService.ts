@@ -1,7 +1,7 @@
-import jwt, { Secret } from 'jsonwebtoken';
 import connection from '../models/connection';
 import UserModel from '../models/UserModel';
 import { IUser } from '../interfaces';
+import generateToken from '../utils/JWT';
 
 export default class ProductService {
   model: UserModel;
@@ -12,16 +12,7 @@ export default class ProductService {
 
   async addUser(user: IUser) {
     const newUser = await this.model.addUser(user);
-    const token: unknown = this.generateToken(newUser);
-    return token as Secret;
+    const token: string = generateToken(newUser);
+    return token;
   }
-
-  private generateToken = (user: IUser): Secret => {
-    const secret = process.env.JWT_SECRET;
-    const payload = { user: user.username, classe: user.classe };
-    const token = jwt.sign(payload, secret as Secret);
-    return token as Secret;
-  };
-
-  // type Secret =  https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/jsonwebtoken/index.d.ts
 }
