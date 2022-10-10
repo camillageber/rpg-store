@@ -14,4 +14,10 @@ export default class ProductService {
 
     return newProduct;
   }
+
+  async getAllProducts() {
+    const allProducts = await this.model.getAllProducts();
+
+    return allProducts;
+  }
 }
